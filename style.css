@@ -163,6 +163,9 @@ section{padding:96px 0}
 .service-card:hover{border-color:var(--primary);transform:translateY(-4px);box-shadow:var(--shadow-h)}
 .service-icon-wrap{width:52px;height:52px;background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.15);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
 .service-icon-wrap svg{width:26px;height:26px;stroke:var(--primary);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.service-icon-wrap.service-photo{width:calc(100% + 52px);height:200px;border-radius:calc(var(--radius-lg) - 1.5px) calc(var(--radius-lg) - 1.5px) 0 0;background:none;border:none;overflow:hidden;padding:0;margin:-26px -26px 20px -26px;flex-shrink:0}
+.service-icon-wrap.service-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.service-card:hover .service-icon-wrap.service-photo img{transform:scale(1.07)}
 .service-card h3{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:8px;color:var(--text)}
 .service-card>p{font-size:.87rem;color:var(--text-m);margin-bottom:16px;line-height:1.7}
 .service-list{display:flex;flex-direction:column;gap:0}
