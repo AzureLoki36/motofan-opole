@@ -11,53 +11,161 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="subpage.css" />
   <style>
-    .history-timeline {
-      margin: 40px 0 60px;
+    /* ===== PHOTO TIMELINE - NOWY DESIGN ===== */
+    .photo-timeline {
+      margin: 50px 0 70px;
     }
-    .timeline-item {
-      display: flex;
-      gap: 24px;
-      margin-bottom: 32px;
-      position: relative;
-      padding-left: 30px;
+    .photo-timeline-header {
+      text-align: center;
+      margin-bottom: 50px;
     }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 8px;
-      width: 12px;
-      height: 12px;
-      background: var(--grad);
-      border-radius: 50%;
+    .photo-timeline-header h2 {
+      margin-bottom: 10px;
     }
-    .timeline-item::after {
-      content: '';
-      position: absolute;
-      left: 5px;
-      top: 24px;
-      width: 2px;
-      height: calc(100% + 20px);
-      background: var(--border);
-    }
-    .timeline-item:last-child::after {
-      display: none;
-    }
-    .timeline-date {
-      font-weight: 700;
-      color: var(--primary);
-      min-width: 180px;
-      font-size: 0.95rem;
-    }
-    .timeline-content {
-      flex: 1;
-    }
-    .timeline-content p {
-      margin: 0;
+    .photo-timeline-header p {
       color: var(--text-m);
-      line-height: 1.7;
     }
     
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    
+    .timeline-card {
+      position: relative;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      cursor: pointer;
+      transition: var(--tr);
+    }
+    .timeline-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .timeline-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--tr);
+    }
+    .timeline-card:hover img {
+      transform: scale(1.05);
+    }
+    .timeline-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+      transition: var(--tr);
+    }
+    .timeline-card:hover .timeline-card-overlay {
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);
+    }
+    .timeline-date-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: var(--grad);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 15px rgba(255,62,0,0.4);
+    }
+    .timeline-card-content h3 {
+      color: #fff;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .timeline-card-content p {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .timeline-card-number {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    
+    /* Featured/large card */
+    .timeline-card.featured {
+      grid-column: span 2;
+      aspect-ratio: 21/9;
+    }
+    .timeline-card.featured .timeline-card-content h3 {
+      font-size: 1.5rem;
+    }
+    
+    /* Zoom icon */
+    .timeline-card .zoom-indicator {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: var(--tr);
+    }
+    .timeline-card:hover .zoom-indicator {
+      opacity: 1;
+    }
+    .timeline-card .zoom-indicator svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+    }
+    
+    @media (max-width: 900px) {
+      .timeline-grid {
+        grid-template-columns: 1fr;
+      }
+      .timeline-card.featured {
+        grid-column: span 1;
+        aspect-ratio: 16/10;
+      }
+    }
+    @media (max-width: 600px) {
+      .timeline-card {
+        aspect-ratio: 4/3;
+      }
+      .timeline-card-overlay {
+        padding: 16px;
+      }
+      .timeline-date-badge {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+      }
+    }
+    
+    /* ===== OLD GALLERY STYLES ===== */
     .history-gallery {
       margin: 50px 0;
     }
@@ -274,142 +382,155 @@
         <p>Zakończyliśmy prace budowlane w pełni profesjonalnego salonu motocyklowego o powierzchni <strong>500 m²</strong> przy ul. Partyzanckiej 85 w Opolu.</p>
       </div>
 
-      <div class="history-timeline">
-        <h2>Etapy budowy <span class="gradient-text">salonu</span></h2>
-        <p style="color: var(--text-m); margin-bottom: 40px;">Opole, ul. Partyzancka 85</p>
-        
-        <div class="timeline-item">
-          <span class="timeline-date">4 października 2014</span>
-          <div class="timeline-content">
-            <p>Rozpoczęliśmy przygotowanie terenu pod inwestycję – karczowanie i wycinanie drzew (owocowych).</p>
-          </div>
+      <!-- ===== PHOTO TIMELINE ===== -->
+      <div class="photo-timeline">
+        <div class="photo-timeline-header">
+          <h2>Etapy budowy <span class="gradient-text">salonu</span></h2>
+          <p>Opole, ul. Partyzancka 85 — kliknij na zdjęcie aby powiększyć</p>
         </div>
         
-        <div class="timeline-item">
-          <span class="timeline-date">29 października 2014</span>
-          <div class="timeline-content">
-            <p>Wjechał ciężki sprzęt, zdzierał humus i kopał miejsce pod fundamenty.</p>
+        <div class="timeline-grid">
+          <!-- 1. Karczowanie drzew -->
+          <div class="timeline-card" onclick="openLightbox(0)">
+            <img src="historypics/32.jpg" alt="Karczowanie drzew owocowych" />
+            <span class="timeline-card-number">1</span>
+            <span class="timeline-date-badge">4.10.2014</span>
+            <div class="timeline-card-overlay">
+              <div class="timeline-card-content">
+                <h3>Karczowanie drzew</h3>
+                <p>Rozpoczęliśmy przygotowanie terenu pod inwestycję – karczowanie i wycinanie drzew owocowych.</p>
+              </div>
+            </div>
+            <div class="zoom-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </div>
           </div>
-        </div>
-        
-        <div class="timeline-item">
-          <span class="timeline-date">13 grudnia 2014</span>
-          <div class="timeline-content">
-            <p>Została wykonana ława fundamentowa i osadzone marki na słupy.</p>
-          </div>
-        </div>
-        
-        <div class="timeline-item">
-          <span class="timeline-date">12 października 2015</span>
-          <div class="timeline-content">
-            <p>Został postawiony szkielet hali.</p>
-          </div>
-        </div>
-        
-        <div class="timeline-item">
-          <span class="timeline-date">25 maja 2016</span>
-          <div class="timeline-content">
-            <p>Wymurowano ściany, zalano strop nad pomieszczeniami: biuro, sklep, socjalne.</p>
-          </div>
-        </div>
-        
-        <div class="timeline-item">
-          <span class="timeline-date">3 listopada 2017</span>
-          <div class="timeline-content">
-            <p>Pokrywamy dach płytą warstwową.</p>
-          </div>
-        </div>
-        
-        <div class="timeline-item">
-          <span class="timeline-date">Maj 2018</span>
-          <div class="timeline-content">
-            <p>Budowa ostro przyspieszyła – prace wewnętrzne, instalacje, wykończenie.</p>
-          </div>
-        </div>
-        
-        <div class="timeline-item">
-          <span class="timeline-date">Koniec 2018</span>
-          <div class="timeline-content">
-            <p>Zakończyliśmy prace budowlane i przygotowaliśmy budynek do odbiorów technicznych. Otwarcie nowego salonu!</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="history-gallery">
-        <h2>Galeria <span class="gradient-text">z budowy</span></h2>
-        <p style="color: var(--text-m); margin-bottom: 30px;">Kliknij na zdjęcie aby powiększyć</p>
-        
-        <div class="gallery-scroll-container">
-          <button class="gallery-nav prev" onclick="scrollGallery(-1)" aria-label="Poprzednie">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <button class="gallery-nav next" onclick="scrollGallery(1)" aria-label="Następne">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
           
-          <div class="gallery-scroll" id="galleryScroll">
-            <div class="gallery-thumb" onclick="openLightbox(0)">
-              <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=300&fit=crop" alt="Przygotowanie terenu" />
-              <span class="gallery-caption">Przygotowanie terenu</span>
-              <div class="zoom-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          <!-- 2. Prace ziemne -->
+          <div class="timeline-card" onclick="openLightbox(1)">
+            <img src="historypics/101.jpg" alt="Prace ziemne" />
+            <span class="timeline-card-number">2</span>
+            <span class="timeline-date-badge">29.10.2014</span>
+            <div class="timeline-card-overlay">
+              <div class="timeline-card-content">
+                <h3>Prace ziemne</h3>
+                <p>Wjechał ciężki sprzęt, zdzierał humus i kopał miejsce pod fundamenty.</p>
               </div>
             </div>
-            <div class="gallery-thumb" onclick="openLightbox(1)">
-              <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400&h=300&fit=crop" alt="Prace ziemne" />
-              <span class="gallery-caption">Prace ziemne</span>
-              <div class="zoom-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            <div class="zoom-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </div>
+          </div>
+          
+          <!-- 3. Fundamenty -->
+          <div class="timeline-card" onclick="openLightbox(2)">
+            <img src="historypics/65.jpg" alt="Ława fundamentowa" />
+            <span class="timeline-card-number">3</span>
+            <span class="timeline-date-badge">13.12.2014</span>
+            <div class="timeline-card-overlay">
+              <div class="timeline-card-content">
+                <h3>Ława fundamentowa</h3>
+                <p>Została wykonana ława fundamentowa i osadzone marki na słupy.</p>
               </div>
             </div>
-            <div class="gallery-thumb" onclick="openLightbox(2)">
-              <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop" alt="Fundamenty" />
-              <span class="gallery-caption">Fundamenty</span>
-              <div class="zoom-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            <div class="zoom-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </div>
+          </div>
+          
+          <!-- 4. Szkielet hali -->
+          <div class="timeline-card" onclick="openLightbox(3)">
+            <img src="historypics/87.jpg" alt="Szkielet stalowy hali" />
+            <span class="timeline-card-number">4</span>
+            <span class="timeline-date-badge">12.10.2015</span>
+            <div class="timeline-card-overlay">
+              <div class="timeline-card-content">
+                <h3>Szkielet hali</h3>
+                <p>Został postawiony szkielet stalowy hali.</p>
               </div>
             </div>
-            <div class="gallery-thumb" onclick="openLightbox(3)">
-              <img src="https://images.unsplash.com/photo-1590644365607-1c5a9e8a5a33?w=400&h=300&fit=crop" alt="Szkielet hali" />
-              <span class="gallery-caption">Szkielet hali</span>
-              <div class="zoom-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            <div class="zoom-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </div>
+          </div>
+          
+          <!-- 5. Murowanie ścian -->
+          <div class="timeline-card featured" onclick="openLightbox(4)">
+            <img src="historypics/23456.jpg" alt="Murowanie ścian" />
+            <span class="timeline-card-number">5</span>
+            <span class="timeline-date-badge">25.05.2016</span>
+            <div class="timeline-card-overlay">
+              <div class="timeline-card-content">
+                <h3>Murowanie ścian i strop</h3>
+                <p>Wymurowano ściany, zalano strop nad pomieszczeniami: biuro, sklep, socjalne.</p>
               </div>
             </div>
-            <div class="gallery-thumb" onclick="openLightbox(4)">
-              <img src="https://images.unsplash.com/photo-1504615458222-979e04d69a27?w=400&h=300&fit=crop" alt="Murowanie ścian" />
-              <span class="gallery-caption">Murowanie ścian</span>
-              <div class="zoom-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            <div class="zoom-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </div>
+          </div>
+          
+          <!-- 6. Dach -->
+          <div class="timeline-card" onclick="openLightbox(5)">
+            <img src="historypics/n.jpg" alt="Dach i prace zewnętrzne" />
+            <span class="timeline-card-number">6</span>
+            <span class="timeline-date-badge">3.11.2017</span>
+            <div class="timeline-card-overlay">
+              <div class="timeline-card-content">
+                <h3>Pokrywanie dachu</h3>
+                <p>Pokrywamy dach płytą warstwową.</p>
               </div>
             </div>
-            <div class="gallery-thumb" onclick="openLightbox(5)">
-              <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=300&fit=crop" alt="Strop" />
-              <span class="gallery-caption">Zalewanie stropu</span>
-              <div class="zoom-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            <div class="zoom-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </div>
+          </div>
+          
+          <!-- 7. Wykończenie -->
+          <div class="timeline-card" onclick="openLightbox(6)">
+            <img src="historypics/678.jpg" alt="Fasada szklana" />
+            <span class="timeline-card-number">7</span>
+            <span class="timeline-date-badge">Maj 2018</span>
+            <div class="timeline-card-overlay">
+              <div class="timeline-card-content">
+                <h3>Prace wykończeniowe</h3>
+                <p>Budowa ostro przyspieszyła – montaż fasady szklanej, instalacje, wykończenie.</p>
               </div>
             </div>
-            <div class="gallery-thumb" onclick="openLightbox(6)">
-              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop" alt="Dach" />
-              <span class="gallery-caption">Montaż dachu</span>
-              <div class="zoom-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            <div class="zoom-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </div>
+          </div>
+          
+          <!-- 8. Gotowy budynek -->
+          <div class="timeline-card" onclick="openLightbox(7)">
+            <img src="historypics/567.jpg" alt="Widok z ulicy" />
+            <span class="timeline-card-number">8</span>
+            <span class="timeline-date-badge">Koniec 2018</span>
+            <div class="timeline-card-overlay">
+              <div class="timeline-card-content">
+                <h3>Budynek gotowy</h3>
+                <p>Zakończyliśmy prace budowlane i przygotowaliśmy budynek do odbiorów technicznych.</p>
               </div>
             </div>
-            <div class="gallery-thumb" onclick="openLightbox(7)">
-              <img src="https://images.unsplash.com/photo-1565043666747-69f6646db940?w=400&h=300&fit=crop" alt="Wykończenie" />
-              <span class="gallery-caption">Prace wykończeniowe</span>
-              <div class="zoom-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            <div class="zoom-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </div>
+          </div>
+          
+          <!-- 9. Otwarcie salonu -->
+          <div class="timeline-card featured" onclick="openLightbox(8)">
+            <img src="historypics/987.jpg" alt="Gotowy salon MotoFan" />
+            <span class="timeline-card-number">9</span>
+            <span class="timeline-date-badge">Otwarcie!</span>
+            <div class="timeline-card-overlay">
+              <div class="timeline-card-content">
+                <h3>Otwarcie nowego salonu</h3>
+                <p>500 m² profesjonalnego salonu motocyklowego przy ul. Partyzanckiej 85 w Opolu. Zapraszamy!</p>
               </div>
             </div>
-            <div class="gallery-thumb" onclick="openLightbox(8)">
-              <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=400&h=300&fit=crop" alt="Gotowy salon" />
-              <span class="gallery-caption">Gotowy salon</span>
-              <div class="zoom-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-              </div>
+            <div class="zoom-indicator">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
             </div>
           </div>
         </div>
@@ -487,27 +608,20 @@
 
   <script src="script.js"></script>
   <script>
-    // Gallery images - high resolution
+    // Gallery images - zdjęcia z budowy salonu MotoFan
     const galleryImages = [
-      { src: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&h=800&fit=crop', caption: 'Przygotowanie terenu' },
-      { src: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&h=800&fit=crop', caption: 'Prace ziemne' },
-      { src: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&h=800&fit=crop', caption: 'Fundamenty' },
-      { src: 'https://images.unsplash.com/photo-1590644365607-1c5a9e8a5a33?w=1200&h=800&fit=crop', caption: 'Szkielet hali' },
-      { src: 'https://images.unsplash.com/photo-1504615458222-979e04d69a27?w=1200&h=800&fit=crop', caption: 'Murowanie ścian' },
-      { src: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=800&fit=crop', caption: 'Zalewanie stropu' },
-      { src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop', caption: 'Montaż dachu' },
-      { src: 'https://images.unsplash.com/photo-1565043666747-69f6646db940?w=1200&h=800&fit=crop', caption: 'Prace wykończeniowe' },
-      { src: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop', caption: 'Gotowy salon' }
+      { src: 'historypics/32.jpg', caption: 'Karczowanie drzew - 4.10.2014' },
+      { src: 'historypics/101.jpg', caption: 'Prace ziemne - 29.10.2014' },
+      { src: 'historypics/65.jpg', caption: 'Ława fundamentowa - 13.12.2014' },
+      { src: 'historypics/87.jpg', caption: 'Szkielet hali - 12.10.2015' },
+      { src: 'historypics/23456.jpg', caption: 'Murowanie ścian - 25.05.2016' },
+      { src: 'historypics/n.jpg', caption: 'Pokrywanie dachu - 3.11.2017' },
+      { src: 'historypics/678.jpg', caption: 'Prace wykończeniowe - Maj 2018' },
+      { src: 'historypics/567.jpg', caption: 'Budynek gotowy - Koniec 2018' },
+      { src: 'historypics/987.jpg', caption: 'Otwarcie salonu MotoFan!' }
     ];
 
     let currentIndex = 0;
-
-    // Scroll gallery with arrows
-    function scrollGallery(direction) {
-      const gallery = document.getElementById('galleryScroll');
-      const scrollAmount = 240;
-      gallery.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-    }
 
     // Open lightbox
     function openLightbox(index) {
@@ -522,7 +636,7 @@
       
       // Build thumbnails
       lightboxThumbnails.innerHTML = galleryImages.map((img, i) => 
-        `<img src="${img.src.replace('1200&h=800', '150&h=100')}" 
+        `<img src="${img.src}" 
               class="${i === index ? 'active' : ''}" 
               onclick="goToImage(${i})" 
               alt="${img.caption}" />`
