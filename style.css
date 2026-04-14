@@ -137,6 +137,7 @@ section{padding:96px 0}
 .brand-card-inner{padding:28px}
 .brand-logo-wrap{height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
 .brand-logo{max-height:110px;max-width:240px;object-fit:contain;filter:none}
+.brand-logo-lg{max-height:121px;max-width:264px}
 .brand-logo-fallback{font-family:'Outfit',sans-serif;font-size:1.7rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .brand-badge{display:inline-block;background:rgba(230,57,70,.08);color:var(--primary);border:1px solid rgba(230,57,70,.18);padding:3px 10px;border-radius:100px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
 .brand-card p{font-size:.88rem;color:var(--text-m);line-height:1.7;margin-bottom:14px}
