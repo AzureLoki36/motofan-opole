@@ -125,14 +125,27 @@
           font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 600;
           color: #fff; line-height: 1.2;
         }
+        .banner-arrow {
+          position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+          width: 48px; height: 48px; border: none; border-radius: 50%;
+          background: rgba(0,0,0,.6); color: #fff; font-size: 1.4rem;
+          cursor: pointer; display: flex; align-items: center; justify-content: center;
+          backdrop-filter: blur(6px); transition: background .2s, transform .2s;
+        }
+        .banner-arrow:hover { background: var(--primary, #00d4ff); transform: translateY(-50%) scale(1.1); }
+        .banner-arrow--left { left: 12px; }
+        .banner-arrow--right { right: 12px; }
         @media (max-width: 768px) {
           .banner-item { width: 220px; height: 280px; }
           .banner-item .banner-cat { font-size: 1rem; }
+          .banner-arrow { width: 38px; height: 38px; font-size: 1.1rem; }
         }
       </style>
 
-      <div class="brand-banner">
-        <div class="banner-track">
+      <div class="brand-banner" id="brandBanner">
+        <button class="banner-arrow banner-arrow--left" aria-label="Przewiń w lewo" onclick="scrollBanner(-1)">&#10094;</button>
+        <button class="banner-arrow banner-arrow--right" aria-label="Przewiń w prawo" onclick="scrollBanner(1)">&#10095;</button>
+        <div class="banner-track" id="bannerTrack">
           <!-- Set 1 -->
           <a href="https://www.agv.com/pl/en/full-face/k7/" target="_blank" rel="noopener" class="banner-item">
             <img src="https://dainese-cdn.thron.com/delivery/public/image/dainese/81086c27-e811-40f0-a04f-03c7368356cf/px6qct/std/450x450/2118399001_013_1.png" alt="Kask AGV K7 Super 46">
@@ -201,6 +214,26 @@
           </a>
         </div>
       </div>
+
+      <script>
+        function scrollBanner(dir) {
+          const track = document.getElementById('bannerTrack');
+          const step = 300;
+          track.style.animation = 'none';
+          const current = track.getBoundingClientRect().left - track.parentElement.getBoundingClientRect().left;
+          track.style.transform = 'translateX(' + current + 'px)';
+          const target = current + (-dir * step);
+          const half = track.scrollWidth / 2;
+          track.style.transition = 'transform .4s ease';
+          track.style.transform = 'translateX(' + target + 'px)';
+          clearTimeout(track._resumeTimer);
+          track._resumeTimer = setTimeout(function() {
+            track.style.transition = 'none';
+            track.style.transform = '';
+            track.style.animation = '';
+          }, 3000);
+        }
+      </script>
 
       <h2>Oleje i chemia <span class="gradient-text">Motul</span></h2>
       <p class="lead">Jesteśmy autoryzowanym punktem sprzedaży produktów Motul. Oferujemy pełną gamę olejów silnikowych, płynów eksploatacyjnych i chemii motocyklowej.</p>
