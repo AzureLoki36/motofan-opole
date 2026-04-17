@@ -1158,3 +1158,309 @@
     gap: 30px;
   }
 }
+
+/* ===== TRANSPORT & WYNAJEM – DUAL BLOCK LAYOUT ===== */
+.tw-dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.tw-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: var(--tr);
+}
+
+.tw-block:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-h);
+}
+
+.tw-photos {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 4px;
+  background: var(--bg);
+}
+
+.tw-photo {
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+.tw-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.tw-photo:hover img {
+  transform: scale(1.05);
+}
+
+.tw-photo:first-child {
+  aspect-ratio: 4/3;
+}
+
+.tw-photo:last-child {
+  aspect-ratio: 3/4;
+}
+
+.tw-photo-label {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tw-body {
+  padding: 28px;
+}
+
+.tw-body h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.tw-body .lead {
+  font-size: 0.92rem;
+  color: var(--text-m);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.tw-features {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.tw-feat {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: var(--text-m);
+  line-height: 1.5;
+}
+
+.tw-feat svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  stroke: var(--primary);
+  margin-top: 1px;
+}
+
+.tw-prices {
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.tw-prices h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.tw-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 0.88rem;
+}
+
+.tw-price-row:last-of-type {
+  border-bottom: none;
+}
+
+.tw-price-row span:first-child {
+  color: var(--text-m);
+}
+
+.tw-price-row strong {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.tw-price-note {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: 10px;
+}
+
+/* Specs mini-grid inside tw-block */
+.tw-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tw-spec {
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+}
+
+.tw-spec span {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.tw-spec strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Shared contact block */
+.tw-contact {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 30px;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.tw-contact-text h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.tw-contact-text p {
+  font-size: 0.95rem;
+  color: var(--text-m);
+  line-height: 1.7;
+}
+
+.tw-contact-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 240px;
+}
+
+.tw-contact-actions .btn {
+  justify-content: center;
+  gap: 8px;
+}
+
+.tw-extras {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.tw-extra {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  text-align: center;
+}
+
+.tw-extra-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--grad-soft);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
+.tw-extra-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--primary);
+}
+
+.tw-extra h4 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.tw-extra p {
+  font-size: 0.85rem;
+  color: var(--text-m);
+  line-height: 1.5;
+}
+
+/* Responsive – dual blocks */
+@media (max-width: 1024px) {
+  .tw-dual {
+    grid-template-columns: 1fr;
+  }
+  
+  .tw-contact {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .tw-contact-actions {
+    min-width: unset;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .tw-extras {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .tw-photos {
+    grid-template-columns: 1fr;
+  }
+  
+  .tw-photo:last-child {
+    aspect-ratio: 16/9;
+  }
+  
+  .tw-specs {
+    grid-template-columns: 1fr;
+  }
+  
+  .tw-contact {
+    padding: 24px;
+  }
+  
+  .tw-contact-actions {
+    flex-direction: column;
+  }
+}
