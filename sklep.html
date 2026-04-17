@@ -97,10 +97,8 @@
         .brand-banner::after { right: 0; background: linear-gradient(270deg, var(--bg, #0a0a1a), transparent); }
         .banner-track {
           display: flex; gap: 0; width: max-content;
-          animation: bannerScroll 35s linear infinite;
+          will-change: transform;
         }
-        .banner-track:hover { animation-play-state: paused; }
-        @keyframes bannerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .banner-item {
           flex-shrink: 0; width: 280px; height: 360px; position: relative;
           clip-path: polygon(12% 0, 100% 0, 88% 100%, 0% 100%);
@@ -216,23 +214,46 @@
       </div>
 
       <script>
-        function scrollBanner(dir) {
-          const track = document.getElementById('bannerTrack');
-          const step = 300;
-          track.style.animation = 'none';
-          const current = track.getBoundingClientRect().left - track.parentElement.getBoundingClientRect().left;
-          track.style.transform = 'translateX(' + current + 'px)';
-          const target = current + (-dir * step);
-          const half = track.scrollWidth / 2;
-          track.style.transition = 'transform .4s ease';
-          track.style.transform = 'translateX(' + target + 'px)';
-          clearTimeout(track._resumeTimer);
-          track._resumeTimer = setTimeout(function() {
-            track.style.transition = 'none';
-            track.style.transform = '';
-            track.style.animation = '';
-          }, 3000);
-        }
+        (function() {
+          var track = document.getElementById('bannerTrack');
+          var pos = 0;
+          var speed = 0.8; // px per frame (auto-scroll)
+          var paused = false;
+          var manualBoost = 0;
+
+          function getHalf() { return track.scrollWidth / 2; }
+
+          function wrap() {
+            var half = getHalf();
+            if (pos <= -half) pos += half;
+            if (pos > 0) pos -= half;
+          }
+
+          function tick() {
+            if (!paused) {
+              pos -= speed;
+            }
+            if (manualBoost !== 0) {
+              var step = manualBoost * 0.12;
+              if (Math.abs(step) < 0.5) step = manualBoost > 0 ? 0.5 : -0.5;
+              if (Math.abs(manualBoost) < 1) { step = manualBoost; manualBoost = 0; }
+              else { manualBoost -= step; }
+              pos -= step;
+            }
+            wrap();
+            track.style.transform = 'translateX(' + pos + 'px)';
+            requestAnimationFrame(tick);
+          }
+
+          track.parentElement.addEventListener('mouseenter', function() { paused = true; });
+          track.parentElement.addEventListener('mouseleave', function() { paused = false; });
+
+          window.scrollBanner = function(dir) {
+            manualBoost += dir * 350;
+          };
+
+          requestAnimationFrame(tick);
+        })();
       </script>
 
       <h2>Oleje i chemia <span class="gradient-text">Motul</span></h2>
